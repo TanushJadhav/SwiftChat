@@ -8,7 +8,7 @@
   },
   "type": "module",
   "keywords": [],
-  "author": "",
+  "author": "tanush",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
