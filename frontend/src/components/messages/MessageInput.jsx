@@ -24,8 +24,8 @@ const MessageInput = () => {
             </button>
         </div>
     </form>
-  )
-}
+  );
+};
 
 export default MessageInput;
 
