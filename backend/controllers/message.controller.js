@@ -1,3 +1,4 @@
+import { getReceiverSocketId, io } from "../socket/socket.js";
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 
@@ -27,12 +28,19 @@ export const sendMessage = async (req, res) => {
     if (newMessage) {
       conversation.messages.push(newMessage._id);
     }
-    // Socket/io to maek this real time
 
     // await conversation.save();
     // await newMessage.save();
+
     // Better way to handle the above two is by using Promsie, this runs in parallel, whereas above newMessage needs to wait until conversation is saved.
     await Promise.all([conversation.save(), newMessage.save()]);
+
+    // Socket IO to make it real time
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      // io.to(socketID).emit() is used to send events/messages to specific users/clients
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json(newMessage);
   } catch (error) {
